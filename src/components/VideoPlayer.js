@@ -1,8 +1,9 @@
 const VideoPlayer = ({ video }) => {
+    if (!video) {
+        return ;
+    }
     return (
-        <video controls width="100%">
-            <source src={video} type="video/webm" />
-        </video>
+        <video controls width="100%" src={video} />
     )
 };
 

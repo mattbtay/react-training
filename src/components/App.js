@@ -11,10 +11,13 @@ const App = () => {
 
     useEffect(() => {
         getVideosFromSearch('cats')
+        
     }, [])
 
+    const [videoKey, setVideoKey] = useState([]);
     const [videos, setVideos] = useState([])
-
+    const [selectedVideo, setSelectedVideo] = useState({})
+    
     const getVideosFromSearch = async (searchTerm) => {
         const response = await pixabay.get('/videos', {
             params: {
@@ -22,20 +25,27 @@ const App = () => {
             }
         })
         setVideos(response.data.hits)
+        setSelectedVideo(response.data.hits[0].videos.tiny.url)
         // console.log(response)
     }
 
+    const onSelectVideo = (video, videoKey) => {
+        setVideoKey((videoKey) => videoKey + 1);
+        setSelectedVideo(video)
+        
+    }
+
     return (
-        <Box w='100%' p={12}>
-        <h1>React App</h1>
-        <SearchBar firstName="Matt" lastName="Taylor" onSearchBarChange={getVideosFromSearch} />
-        <Grid templateColumns='2fr 1fr' gap={5}>
-            <GridItem>
-                <VideoPlayer video='' />
-            </GridItem>
-            <GridItem><MediaList videos={videos} /></GridItem>
-        </Grid>
-        </Box>
+        <Container maxW='992px'>
+            <h1>React App</h1>
+            <SearchBar firstName="Matt" lastName="Taylor" onSearchBarChange={getVideosFromSearch} />
+            <Grid templateColumns='2fr 1fr' gap={5}>
+                <GridItem>
+                    <VideoPlayer key={videoKey} video={selectedVideo} />
+                </GridItem>
+                <GridItem><MediaList videos={videos} onSelectVideo={onSelectVideo}/></GridItem>
+            </Grid>
+        </Container>
     );
 }
 

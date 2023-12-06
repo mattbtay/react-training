@@ -1,10 +1,13 @@
 import {useState} from 'react';
 import { Input } from '@chakra-ui/react'
+import useUpdateLogger from '../hooks/use-update-logger';
 
 const SearchBar = ({firstName, lastName, onSearchBarChange}) => {
 
     // SearchTerm = variable, setSearchTerm = function
     const [searchTerm, setSearchTerm ] = useState('');
+
+    useUpdateLogger(searchTerm, 'Search Query')
 
     const onInputChange = (value) => {
         setSearchTerm(value)
@@ -20,7 +23,6 @@ const SearchBar = ({firstName, lastName, onSearchBarChange}) => {
                 value={searchTerm}
                 type="text"
             />
-            <p>{firstName} {lastName}'s Search Bar</p>
         </div>
     );
 }
